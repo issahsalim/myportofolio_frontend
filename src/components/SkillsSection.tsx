@@ -36,7 +36,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
             Technical Stack & <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400">Mastery</span>
           </h2>
           <p className="mt-3 text-slate-400 text-base">
-            Engineered over 5 years across full-stack systems, deep learning models, and mobile architectures.
+            Engineered over 5+ years across full-stack systems, deep learning models, and mobile architectures.
           </p>
         </div>
 

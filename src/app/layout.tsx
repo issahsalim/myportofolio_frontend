@@ -17,10 +17,15 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Issah Abdulsalim Boresa | Full-Stack & AI Developer in Ghana (Issah Salim / Boresa)',
+  title: 'Issah Abdulsalim Boresa | Technology Optimist, Full-Stack & AI Developer in Ghana',
   description:
-    'Official portfolio of Issah Abdulsalim Boresa (Issah Salim / Boresa), a premier Full-Stack & Machine Learning Developer in Ghana specializing in Next.js, Django, REST APIs, Vision Transformers, and Expo React Native.',
+    'Official portfolio of Issah Abdulsalim Boresa (Issah Salim / Boresa) — a passionate Technology Optimist, premier Full-Stack & Machine Learning Engineer based in Ghana specializing in Next.js, Django, Vision Transformers, and Mobile Apps.',
   keywords: [
+    'Technology Optimist',
+    'Technology Optimist Developer',
+    'Technology Optimist Ghana',
+    'Technology Optimist Issah Boresa',
+    'Tech Optimist',
     'Issah Abdulsalim Boresa',
     'Issah Salim',
     'Issah Boresa',
@@ -37,7 +42,7 @@ export const metadata: Metadata = {
     'UENR IT Developer',
   ],
   authors: [{ name: 'Issah Abdulsalim Boresa', url: 'https://boresa.com' }],
-  creator: 'Issah Abdulsalim Boresa',
+  creator: 'Issah Abdulsalim Boresa (Technology Optimist)',
   metadataBase: new URL('https://boresa.com'),
   icons: {
     icon: '/boresa.jpeg',
@@ -52,24 +57,24 @@ export const metadata: Metadata = {
     type: 'profile',
     locale: 'en_US',
     url: 'https://boresa.com',
-    title: 'Issah Abdulsalim Boresa | Full-Stack & AI Developer in Ghana',
+    title: 'Issah Abdulsalim Boresa | Technology Optimist & AI Developer',
     description:
-      'Explore projects and technical expertise of Issah Abdulsalim Boresa (Issah Salim), Full Stack & AI Developer based in Ghana.',
-    siteName: 'Issah Boresa Portfolio',
+      'Official Portfolio of Issah Abdulsalim Boresa (Issah Salim) — Technology Optimist, Full-Stack Developer & Machine Learning Engineer in Ghana.',
+    siteName: 'Issah Boresa | Technology Optimist',
     images: [
       {
         url: '/boresa.jpeg',
         width: 1200,
         height: 630,
-        alt: 'Issah Abdulsalim Boresa - Full-Stack Developer in Ghana',
+        alt: 'Issah Abdulsalim Boresa - Technology Optimist & Full-Stack Developer in Ghana',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Issah Abdulsalim Boresa | Full-Stack & AI Developer in Ghana',
+    title: 'Issah Abdulsalim Boresa | Technology Optimist & AI Developer',
     description:
-      'Official Portfolio of Issah Abdulsalim Boresa. Full-Stack Developer & AI ML Engineer in Ghana.',
+      'Official Portfolio of Issah Abdulsalim Boresa. Technology Optimist, Full-Stack Developer & AI ML Engineer in Ghana.',
     images: ['/boresa.jpeg'],
   },
   robots: {
@@ -95,11 +100,21 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Issah Abdulsalim Boresa',
-    alternateName: ['Issah Salim', 'Issah Boresa', 'Boresa', 'Bores'],
-    jobTitle: 'Full-Stack & Machine Learning Developer',
+    alternateName: [
+      'Technology Optimist',
+      'Tech Optimist',
+      'Technology Optimist Ghana',
+      'Issah Salim',
+      'Issah Boresa',
+      'Boresa',
+      'Bores',
+    ],
+    jobTitle: 'Technology Optimist & Full-Stack AI Developer',
+    description:
+      'Issah Abdulsalim Boresa is a Technology Optimist, Full-Stack Developer and Machine Learning Engineer based in Ghana.',
     worksFor: {
       '@type': 'Organization',
-      name: 'Freelance & Independent Software Engineer',
+      name: 'Independent Technology Optimist & Software Engineer',
     },
     alumniOf: {
       '@type': 'EducationalOrganization',
@@ -120,6 +135,8 @@ export default function RootLayout({
       'https://youtube.com/@issahsalim',
     ],
     knowsAbout: [
+      'Technology Optimism',
+      'Technology Optimist',
       'Full Stack Web Development',
       'Django',
       'Django REST Framework',
@@ -149,4 +166,3 @@ export default function RootLayout({
     </html>
   );
 }
-  

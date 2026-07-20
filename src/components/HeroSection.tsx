@@ -12,6 +12,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ info }: HeroSectionProps) {
   const roles = [
+    'Technology Optimist',
     'Full-Stack Developer',
     'AI & Machine Learning Engineer',
     'Django & Next.js Architect',
@@ -162,8 +163,8 @@ export default function HeroSection({ info }: HeroSectionProps) {
               <div className="absolute -top-4 -right-4 bg-slate-900/90 border border-indigo-500/40 p-2.5 rounded-2xl shadow-xl backdrop-blur-md flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-indigo-400 animate-spin" style={{ animationDuration: '6s' }} />
                 <div className="text-[11px]">
-                  <p className="font-bold text-white">Vision Transformer</p>
-                  <p className="text-indigo-300 font-mono">Deep Learning</p>
+                  <p className="font-bold text-white">Technology Optimist</p>
+                  <p className="text-indigo-300 font-mono">Full-Stack & AI</p>
                 </div>
               </div>
             </div>
