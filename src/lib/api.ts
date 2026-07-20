@@ -3,11 +3,11 @@ import { PersonalInfo, Skill, Project, ContactMessage } from '@/types/portfolio'
 // ==============================================================================
 // CENTRAL BACKEND CONFIGURATION
 // To point your frontend to a different backend (e.g., in production or remote server),
-// simply change BACKEND_URL below OR set NEXT_PUBLIC_BACKEND_URL in frontend/.env.local
+// set NEXT_PUBLIC_BACKEND_URL in Netlify environment variables or frontend/.env.local
 // ==============================================================================
-export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://myportofolio-backend.onrender.com';
+const rawBackendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://myportofolio-backend.onrender.com';
+export const BACKEND_URL = rawBackendUrl.trim().replace(/\/+$/, '');
 export const API_BASE_URL = `${BACKEND_URL}/api`;
-
 
 /**
  * Helper to resolve media URLs (images, resumes) relative to the central BACKEND_URL.
@@ -86,7 +86,7 @@ export const INITIAL_PROJECTS: Project[] = [
     live_url: "https://studyplanner.app",
     github_url: "https://github.com/issahsalim/study-planner",
     order: 2
-  }, 
+  },
   {
     id: 3,
     title: "MCH Yeji — Hospital Website",
