@@ -4,7 +4,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
     process.env.URL ||
-    'https://issahsalim.netlify.app';
+    'https://boresa.netlify.app';
 
   return [
     {

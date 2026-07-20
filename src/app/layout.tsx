@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: 'Issah Abdulsalim Boresa | Technology Optimist, Full-Stack & AI Developer in Ghana',
   description:
     'Official portfolio of Issah Abdulsalim Boresa (Issah Salim / Boresa) — a passionate Technology Optimist, premier Full-Stack & Machine Learning Engineer based in Ghana specializing in Next.js, Django, Vision Transformers, and Mobile Apps.',
-  keywords: [ 
+  keywords: [
     'Technology Optimist',
     'Technology Optimist Developer',
     'Technology Optimist Ghana',
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     'Glaucoma Detection AI',
     'UENR IT Developer',
   ],
-  authors: [{ name: 'Issah Abdulsalim Boresa', url: 'https://boresa.com' }],
+  authors: [{ name: 'Issah Abdulsalim Boresa', url: 'https://boresa.netlify.app' }],
   creator: 'Issah Abdulsalim Boresa (Technology Optimist)',
-  metadataBase: new URL('https://boresa.com'),
+  metadataBase: new URL('https://boresa.netlify.app'),
   icons: {
     icon: '/boresa.jpeg',
     shortcut: '/boresa.jpeg',
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'profile',
     locale: 'en_US',
-    url: 'https://boresa.com',
+    url: 'https://boresa.netlify.app',
     title: 'Issah Abdulsalim Boresa | Technology Optimist & AI Developer',
     description:
       'Official Portfolio of Issah Abdulsalim Boresa (Issah Salim) — Technology Optimist, Full-Stack Developer & Machine Learning Engineer in Ghana.',
@@ -93,7 +93,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -124,7 +123,7 @@ export default function RootLayout({
       '@type': 'EducationalOrganization',
       name: 'University of Energy and Natural Resources (UENR)',
     },
-    url: 'https://boresa.com',
+    url: 'https://boresa.netlify.app',
     email: 'issah.boresa.stu@uenr.edu.gh',
     telephone: '+233596878044',
     address: {
