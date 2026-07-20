@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: 'Issah Abdulsalim Boresa | Technology Optimist, Full-Stack & AI Developer in Ghana',
   description:
     'Official portfolio of Issah Abdulsalim Boresa (Issah Salim / Boresa) — a passionate Technology Optimist, premier Full-Stack & Machine Learning Engineer based in Ghana specializing in Next.js, Django, Vision Transformers, and Mobile Apps.',
-  keywords: [
+  keywords: [ 
     'Technology Optimist',
     'Technology Optimist Developer',
     'Technology Optimist Ghana',
@@ -88,7 +88,11 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: 'cXTKE5rtlk6EF_3977uLoO9sdqQXF7vTvPormEePKms',
+  },
 };
+
 
 export default function RootLayout({
   children,
