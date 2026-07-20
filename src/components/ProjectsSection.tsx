@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ExternalLink, Sparkles, Filter, CheckCircle2, X, Code2, Globe, Cpu, Smartphone } from 'lucide-react';
+import Image from 'next/image';
+import { ExternalLink, Sparkles, X } from 'lucide-react';
 import { Project } from '@/types/portfolio';
+import { getMediaUrl } from '@/lib/api';
 import { GithubIcon } from './SocialIcons';
 
 interface ProjectsSectionProps {
@@ -88,36 +90,61 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project, index) => {
             const techBadges = project.tech_list || project.tech_stack.split(',').map(t => t.trim());
+            const projectImg = getMediaUrl(project.image);
+
             return (
               <div
                 key={project.id || project.title}
-                className="bg-slate-900/70 border border-slate-800/80 hover:border-cyan-500/50 rounded-2xl p-6 flex flex-col justify-between backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 shadow-xl group"
+                className="bg-slate-900/70 border border-slate-800/80 hover:border-cyan-500/50 rounded-2xl overflow-hidden flex flex-col justify-between backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 shadow-xl group"
               >
-                <div>
-                  {/* Top Badge & Number */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
-                      0{index + 1}
-                    </span>
-                    {project.subtitle && (
-                      <span className="text-[11px] font-medium text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">
-                        {project.subtitle}
+                {/* Project Image Banner Header (if uploaded) */}
+                {projectImg ? (
+                  <div className="relative w-full h-48 bg-slate-950 overflow-hidden border-b border-slate-800">
+                    <Image
+                      src={projectImg}
+                      alt={project.title}
+                      fill
+                      unoptimized
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="text-[10px] font-mono font-bold text-cyan-300 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-cyan-500/30 shadow-md">
+                        0{index + 1}
                       </span>
-                    )}
+                    </div>
                   </div>
+                ) : null}
+
+                <div className="p-6">
+                  {/* Top Badge & Number if no image */}
+                  {!projectImg && (
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
+                        0{index + 1}
+                      </span>
+                      {project.subtitle && (
+                        <span className="text-[11px] font-medium text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">
+                          {project.subtitle}
+                        </span>
+                      )}
+                    </div>
+                  )}
 
                   {/* Title */}
                   <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-2">
                     {project.title}
                   </h3>
 
+                  {/* Subtitle if image is present */}
+                  {projectImg && project.subtitle && (
+                    <p className="text-xs text-indigo-400 font-mono mb-2">{project.subtitle}</p>
+                  )}
+
                   {/* Description */}
                   <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 mb-6">
                     {project.description}
                   </p>
-                </div>
 
-                <div>
                   {/* Tech Stack Pills */}
                   <div className="flex flex-wrap gap-1.5 mb-6">
                     {techBadges.slice(0, 4).map((tech, idx) => (
@@ -134,43 +161,43 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                       </span>
                     )}
                   </div>
+                </div>
 
-                  {/* Action Bar */}
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-800/80 text-xs">
-                    <button
-                      onClick={() => setSelectedProject(project)}
-                      className="text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1 hover:underline"
-                    >
-                      <span>Details & Spec</span>
-                      <Sparkles className="w-3 h-3" />
-                    </button>
+                {/* Action Bar */}
+                <div className="flex items-center justify-between px-6 pb-6 pt-3 border-t border-slate-800/80 text-xs">
+                  <button
+                    onClick={() => setSelectedProject(project)}
+                    className="text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1 hover:underline"
+                  >
+                    <span>Details & Spec</span>
+                    <Sparkles className="w-3 h-3" />
+                  </button>
 
-                    <div className="flex items-center gap-3">
-                      {project.github_url && (
-                        <a
-                          href={project.github_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-slate-400 hover:text-white transition-colors"
-                          title="View Source Repository"
-                          aria-label="GitHub Repository"
-                        >
-                          <GithubIcon className="w-4 h-4" />
-                        </a>
-                      )}
-                      {project.live_url && (
-                        <a
-                          href={project.live_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1 font-semibold"
-                          title="View Live Platform"
-                          aria-label="Live Demo"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      )}
-                    </div>
+                  <div className="flex items-center gap-3">
+                    {project.github_url && (
+                      <a
+                        href={project.github_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-400 hover:text-white transition-colors"
+                        title="View Source Repository"
+                        aria-label="GitHub Repository"
+                      >
+                        <GithubIcon className="w-4 h-4" />
+                      </a>
+                    )}
+                    {project.live_url && (
+                      <a
+                        href={project.live_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1 font-semibold"
+                        title="View Live Platform"
+                        aria-label="Live Demo"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -185,10 +212,23 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
           <div className="bg-slate-900 border border-cyan-500/30 rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setSelectedProject(null)}
-              className="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white"
+              className="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white z-10"
             >
               <X className="w-5 h-5" />
             </button>
+
+            {/* Modal Image Header (if uploaded) */}
+            {selectedProject.image && (
+              <div className="relative w-full h-56 rounded-xl bg-slate-950 overflow-hidden border border-slate-800">
+                <Image
+                  src={getMediaUrl(selectedProject.image)}
+                  alt={selectedProject.title}
+                  fill
+                  unoptimized
+                  className="object-cover object-top"
+                />
+              </div>
+            )}
 
             <div>
               <span className="text-xs font-mono text-cyan-400 font-semibold uppercase tracking-wider">
