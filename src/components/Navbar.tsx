@@ -59,7 +59,7 @@ export default function Navbar({ resumeUrl = '/IssahSalim_CV.pdf' }: NavbarProps
               ISSAH BORESA
             </span>
             <span className="text-[10px] font-mono text-cyan-400 tracking-wider uppercase">
-              Full-Stack & AI
+              Technology Optimist
             </span>
           </div>
         </a>
