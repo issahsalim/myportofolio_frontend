@@ -1,24 +1,47 @@
 import { PersonalInfo, Skill, Project, ContactMessage } from '@/types/portfolio';
 
 // ==============================================================================
-// CENTRAL BACKEND CONFIGURATION
-// To point your frontend to a different backend (e.g., in production or remote server),
-// set NEXT_PUBLIC_BACKEND_URL in Netlify environment variables or frontend/.env.local
+// CENTRAL BACKEND CONFIGURATION & SMART URL RESOLUTION
+// Automatically detects environment (Localhost, LAN IP, or Render Production)
 // ==============================================================================
-const rawBackendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://myportofolio-backend.onrender.com';
-export const BACKEND_URL = rawBackendUrl.trim().replace(/\/+$/, '');
+export function getBackendUrl(): string {
+  let envUrl = process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
+  if (envUrl) {
+    if (!envUrl.startsWith('http://') && !envUrl.startsWith('https://')) {
+      envUrl = `http://${envUrl}`;
+    }
+    return envUrl.replace(/\/+$/, '');
+  }
+
+  // In browser runtime: detect if running on localhost or local network IP
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return 'http://localhost:8000';
+    }
+    if (hostname.startsWith('192.168.') || hostname.startsWith('10.') || hostname.startsWith('172.')) {
+      return `http://${hostname}:8000`;
+    }
+  }
+
+  // Fallback to live Render production backend
+  return 'https://myportofolio-backend.onrender.com';
+}
+
+export const BACKEND_URL = getBackendUrl();
 export const API_BASE_URL = `${BACKEND_URL}/api`;
 
 /**
- * Helper to resolve media URLs (images, resumes) relative to the central BACKEND_URL.
+ * Helper to resolve media URLs (images, resumes) relative to the resolved backend URL.
  */
 export function getMediaUrl(path?: string | null, fallback: string = ''): string {
   if (!path) return fallback;
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
+  const baseUrl = getBackendUrl();
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${BACKEND_URL}${cleanPath}`;
+  return `${baseUrl}${cleanPath}`;
 }
 
 // Fallback initial data sourced directly from Issah Abdulsalim Boresa's CV & Portfolio
@@ -178,47 +201,51 @@ export const INITIAL_PROJECTS: Project[] = [
 ];
 
 export async function fetchPersonalInfo(): Promise<PersonalInfo> {
+  const baseUrl = getBackendUrl();
   try {
-    const res = await fetch(`${API_BASE_URL}/personal/`, { cache: 'no-store' });
+    const res = await fetch(`${baseUrl}/api/personal/`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       if (data && Object.keys(data).length > 0) return data;
     }
   } catch (err) {
-    console.warn("Could not reach backend API at", API_BASE_URL, "using fallback data.");
+    console.warn("Could not reach backend API at", `${baseUrl}/api`, "using fallback data.");
   }
   return INITIAL_PERSONAL_INFO;
 }
 
 export async function fetchSkills(): Promise<Skill[]> {
+  const baseUrl = getBackendUrl();
   try {
-    const res = await fetch(`${API_BASE_URL}/skills/`, { cache: 'no-store' });
+    const res = await fetch(`${baseUrl}/api/skills/`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) return data;
     }
   } catch (err) {
-    console.warn("Could not reach backend API at", API_BASE_URL, "using fallback data.");
+    console.warn("Could not reach backend API at", `${baseUrl}/api`, "using fallback data.");
   }
   return INITIAL_SKILLS;
 }
 
 export async function fetchProjects(): Promise<Project[]> {
+  const baseUrl = getBackendUrl();
   try {
-    const res = await fetch(`${API_BASE_URL}/projects/`, { cache: 'no-store' });
+    const res = await fetch(`${baseUrl}/api/projects/`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) return data;
     }
   } catch (err) {
-    console.warn("Could not reach backend API at", API_BASE_URL, "using fallback data.");
+    console.warn("Could not reach backend API at", `${baseUrl}/api`, "using fallback data.");
   }
   return INITIAL_PROJECTS;
 }
 
 export async function sendContactMessage(msg: ContactMessage): Promise<{ success: boolean; message: string }> {
+  const baseUrl = getBackendUrl();
   try {
-    const res = await fetch(`${API_BASE_URL}/contact/`, {
+    const res = await fetch(`${baseUrl}/api/contact/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(msg),

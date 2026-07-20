@@ -1,7 +1,8 @@
 import PortfolioContainer from '@/components/PortfolioContainer';
 import { fetchPersonalInfo, fetchSkills, fetchProjects } from '@/lib/api';
 
-export const revalidate = 60; // Revalidate dynamic data from Django API every 60s
+export const dynamic = 'force-dynamic'; // Always fetch fresh data from Django backend API
+export const revalidate = 0;
 
 export default async function HomePage() {
   // Fetch initial data for SSR/SSG
