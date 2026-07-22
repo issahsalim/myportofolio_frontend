@@ -180,7 +180,7 @@ export default function ContactSection({ info }: ContactSectionProps) {
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Sending to Django...</span>
+                      <span>please wait...</span>
                     </>
                   ) : (
                     <>
