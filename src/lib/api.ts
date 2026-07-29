@@ -1,18 +1,21 @@
-import { PersonalInfo, Skill, Project, ContactMessage } from '@/types/portfolio';
+import { PersonalInfo, Skill, Project, ContactMessage, Testimonial } from '@/types/portfolio';
+
+
 
 // ==============================================================================
 // CENTRAL BACKEND CONFIGURATION & SMART DYNAMIC URL RESOLUTION
 // Automatically targets localhost:8000 when browsing locally, or Render in production
 // ==============================================================================
+
 export function getBackendUrl(): string {
   // 1. In browser runtime: check current window hostname
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return 'http://localhost:8000';
+      return 'http://localhost:8090'; 
     }
     if (hostname.startsWith('192.168.') || hostname.startsWith('10.') || hostname.startsWith('172.')) {
-      return `http://${hostname}:8000`;
+      return `http://${hostname}:8090`;
     }
   }
 
@@ -97,6 +100,7 @@ export const INITIAL_PROJECTS: Project[] = [
     github_url: "https://github.com/issahsalim/projectfreestress",
     order: 1
   },
+
   {
     id: 2,
     title: "Study Planner",
@@ -240,6 +244,20 @@ export async function fetchProjects(): Promise<Project[]> {
   return INITIAL_PROJECTS;
 }
 
+export async function fetchTestimonials(): Promise<Testimonial[]> {
+  const baseUrl = getBackendUrl();
+  try {
+    const res = await fetch(`${baseUrl}/api/testimonials/`, { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) return data;
+    }
+  } catch (err) {
+    console.warn("Could not reach backend API at", `${baseUrl}/api`, "for testimonials.");
+  }
+  return [];
+}
+
 export async function sendContactMessage(msg: ContactMessage): Promise<{ success: boolean; message: string }> {
   const baseUrl = getBackendUrl();
   try {
@@ -257,3 +275,4 @@ export async function sendContactMessage(msg: ContactMessage): Promise<{ success
     return { success: false, message: "Network error connecting to backend server. Please try again later." };
   }
 }
+

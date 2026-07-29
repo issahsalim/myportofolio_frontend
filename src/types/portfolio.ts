@@ -40,3 +40,15 @@ export interface ContactMessage {
   subject: string;
   message: string;
 }
+
+export interface Testimonial {
+  id?: number;
+  name: string;
+  title: string;
+  image?: string;
+  rating?: number;
+  comment: string;
+  created_at?: string;
+}
+
+

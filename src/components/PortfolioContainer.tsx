@@ -6,38 +6,44 @@ import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
 import ProjectsSection from '@/components/ProjectsSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
-import { PersonalInfo, Skill, Project } from '@/types/portfolio';
-import { fetchPersonalInfo, fetchSkills, fetchProjects } from '@/lib/api';
+import { PersonalInfo, Skill, Project, Testimonial } from '@/types/portfolio';
+import { fetchPersonalInfo, fetchSkills, fetchProjects, fetchTestimonials } from '@/lib/api';
 
 interface PortfolioContainerProps {
   initialInfo: PersonalInfo;
   initialSkills: Skill[];
   initialProjects: Project[];
+  initialTestimonials?: Testimonial[];
 }
 
 export default function PortfolioContainer({
   initialInfo,
   initialSkills,
   initialProjects,
+  initialTestimonials = [],
 }: PortfolioContainerProps) {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo>(initialInfo);
   const [skills, setSkills] = useState<Skill[]>(initialSkills);
   const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials);
 
   useEffect(() => {
     // Client-side background sync: fetch live data directly from Django backend
     const syncLiveData = async () => {
       try {
-        const [liveInfo, liveSkills, liveProjects] = await Promise.all([
+        const [liveInfo, liveSkills, liveProjects, liveTestimonials] = await Promise.all([
           fetchPersonalInfo(),
           fetchSkills(),
           fetchProjects(),
+          fetchTestimonials(),
         ]);
         if (liveInfo) setPersonalInfo(liveInfo);
         if (liveSkills && liveSkills.length > 0) setSkills(liveSkills);
         if (liveProjects && liveProjects.length > 0) setProjects(liveProjects);
+        if (liveTestimonials) setTestimonials(liveTestimonials);
       } catch (err) {
         console.warn("Background live sync note:", err);
       }
@@ -54,9 +60,11 @@ export default function PortfolioContainer({
         <AboutSection info={personalInfo} />
         <SkillsSection skills={skills} />
         <ProjectsSection projects={projects} />
+        <TestimonialsSection testimonials={testimonials} />
         <ContactSection info={personalInfo} />
       </main>
       <Footer info={personalInfo} />
     </div>
   );
 }
+
