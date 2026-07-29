@@ -99,15 +99,29 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
               >
                 {/* Project Image Banner Header (if uploaded) */}
                 {projectImg ? (
-                  <div className="relative w-full h-48 bg-slate-950 overflow-hidden border-b border-slate-800">
+                  <div className="relative w-full h-56 bg-slate-950/90 overflow-hidden border-b border-slate-800 flex items-center justify-center p-2 group">
+                    {/* Ambient Blurred Background Layer */}
                     <Image
                       src={projectImg}
-                      alt={project.title}
+                      alt=""
                       fill
                       unoptimized
-                      className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      aria-hidden="true"
+                      className="object-cover blur-2xl opacity-40 scale-125 select-none pointer-events-none"
                     />
-                    <div className="absolute top-3 left-3">
+
+                    {/* Foreground Image Layer (100% visible, handles portrait & landscape without cropping) */}
+                    <div className="relative w-full h-full flex items-center justify-center z-10">
+                      <Image
+                        src={projectImg}
+                        alt={project.title}
+                        fill
+                        unoptimized
+                        className="object-contain object-center drop-shadow-xl group-hover:scale-105 transition-transform duration-500 rounded-lg"
+                      />
+                    </div>
+
+                    <div className="absolute top-3 left-3 z-20">
                       <span className="text-[10px] font-mono font-bold text-cyan-300 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-cyan-500/30 shadow-md">
                         0{index + 1}
                       </span>
@@ -219,14 +233,27 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
 
             {/* Modal Image Header (if uploaded) */}
             {selectedProject.image && (
-              <div className="relative w-full h-56 rounded-xl bg-slate-950 overflow-hidden border border-slate-800">
+              <div className="relative w-full h-64 sm:h-80 rounded-xl bg-slate-950 overflow-hidden border border-slate-800 flex items-center justify-center p-3">
+                {/* Ambient Blurred Background Layer */}
                 <Image
                   src={getMediaUrl(selectedProject.image)}
-                  alt={selectedProject.title}
+                  alt=""
                   fill
                   unoptimized
-                  className="object-cover object-top"
+                  aria-hidden="true"
+                  className="object-cover blur-2xl opacity-40 scale-125 select-none pointer-events-none"
                 />
+
+                {/* Foreground Full Uncropped Image */}
+                <div className="relative w-full h-full flex items-center justify-center z-10">
+                  <Image
+                    src={getMediaUrl(selectedProject.image)}
+                    alt={selectedProject.title}
+                    fill
+                    unoptimized
+                    className="object-contain object-center drop-shadow-2xl rounded-lg"
+                  />
+                </div>
               </div>
             )}
 
