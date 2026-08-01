@@ -3,13 +3,17 @@
 import React from 'react';
 import { GraduationCap, Briefcase, Cpu, Code2, Globe, Mail, Phone, MapPin } from 'lucide-react';
 import { PersonalInfo } from '@/types/portfolio';
-import { GithubIcon, LinkedinIcon, YoutubeIcon } from './SocialIcons';
+import { GithubIcon, LinkedinIcon, YoutubeIcon, WhatsappIcon } from './SocialIcons';
 
 interface AboutSectionProps {
   info: PersonalInfo;
 }
 
 export default function AboutSection({ info }: AboutSectionProps) {
+  const cleanPhone = (info.phone || '0596878044').replace(/\D/g, '');
+  const formattedPhone = cleanPhone.startsWith('0') ? `233${cleanPhone.slice(1)}` : cleanPhone;
+  const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent("Hi Issah, I am visiting your portfolio website and would like to chat with you!")}`;
+
   const highlights = [
     {
       icon: Code2,
@@ -137,6 +141,9 @@ export default function AboutSection({ info }: AboutSectionProps) {
           </div>
 
           <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-4 flex items-center justify-around">
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg text-slate-300 hover:text-emerald-400 hover:bg-slate-800 transition-all" aria-label="WhatsApp Chat">
+              <WhatsappIcon className="w-5 h-5" />
+            </a>
             {info.github && (
               <a href={info.github} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg text-slate-300 hover:text-cyan-400 hover:bg-slate-800 transition-all" aria-label="GitHub">
                 <GithubIcon className="w-5 h-5" />

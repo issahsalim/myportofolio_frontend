@@ -9,6 +9,7 @@ import ProjectsSection from '@/components/ProjectsSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import FloatingWhatsapp from '@/components/FloatingWhatsapp';
 import { PersonalInfo, Skill, Project, Testimonial } from '@/types/portfolio';
 import { fetchPersonalInfo, fetchSkills, fetchProjects, fetchTestimonials } from '@/lib/api';
 
@@ -64,6 +65,10 @@ export default function PortfolioContainer({
         <ContactSection info={personalInfo} />
       </main>
       <Footer info={personalInfo} />
+      <FloatingWhatsapp
+        phone={personalInfo.phone || '0596878044'}
+        prefixText="Hi Issah, I am visiting your portfolio website and would like to chat with you!"
+      />
     </div>
   );
 }

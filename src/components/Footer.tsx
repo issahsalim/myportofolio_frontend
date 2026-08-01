@@ -3,7 +3,7 @@
 import React from 'react';
 import { ArrowUp } from 'lucide-react';
 import { PersonalInfo } from '@/types/portfolio';
-import { GithubIcon, LinkedinIcon, YoutubeIcon } from './SocialIcons';
+import { GithubIcon, LinkedinIcon, YoutubeIcon, WhatsappIcon } from './SocialIcons';
 
 interface FooterProps {
   info: PersonalInfo;
@@ -13,6 +13,10 @@ export default function Footer({ info }: FooterProps) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const cleanPhone = (info.phone || '0596878044').replace(/\D/g, '');
+  const formattedPhone = cleanPhone.startsWith('0') ? `233${cleanPhone.slice(1)}` : cleanPhone;
+  const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent("Hi Issah, I am visiting your portfolio website and would like to chat with you!")}`;
 
   return (
     <footer className="relative z-10 border-t border-slate-800/80 bg-slate-950 py-12 text-slate-400">
@@ -33,6 +37,16 @@ export default function Footer({ info }: FooterProps) {
 
           {/* Social Links */}
           <div className="flex items-center gap-4">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/50 transition-all"
+              aria-label="Chat on WhatsApp"
+            >
+              <WhatsappIcon className="w-4 h-4" />
+            </a>
+
             {info.github && (
               <a
                 href={info.github}

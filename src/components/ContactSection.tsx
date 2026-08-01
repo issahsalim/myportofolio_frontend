@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Send, CheckCircle2, AlertCircle, Mail, Phone, MapPin, Loader2 } from 'lucide-react';
 import { sendContactMessage } from '@/lib/api';
 import { PersonalInfo } from '@/types/portfolio';
+import { WhatsappIcon } from './SocialIcons';
 
 interface ContactSectionProps {
   info: PersonalInfo;
@@ -19,6 +20,11 @@ export default function ContactSection({ info }: ContactSectionProps) {
 
   const [loading, setLoading] = useState(false);
   const [responseStatus, setResponseStatus] = useState<{ success: boolean; message: string } | null>(null);
+
+  const cleanPhone = (info.phone || '0596878044').replace(/\D/g, '');
+  const formattedPhone = cleanPhone.startsWith('0') ? `233${cleanPhone.slice(1)}` : cleanPhone;
+  const defaultPrefixText = "Hi Issah, I am visiting your portfolio website and would like to discuss a project with you!";
+  const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(defaultPrefixText)}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +64,35 @@ export default function ContactSection({ info }: ContactSectionProps) {
             </p>
 
             <div className="space-y-4 pt-4">
+              {/* WhatsApp Direct Chat Card */}
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-emerald-950/40 border border-emerald-500/40 hover:border-emerald-400 rounded-2xl p-4 flex items-center justify-between group transition-all duration-300 shadow-lg shadow-emerald-950/30"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                    <WhatsappIcon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="text-[11px] font-mono text-emerald-400 uppercase font-semibold">Direct WhatsApp Chat</p>
+                      <span className="flex h-2 w-2 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                      </span>
+                    </div>
+                    <p className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                      {info.phone}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-emerald-500 text-slate-950 group-hover:bg-emerald-400 transition-colors">
+                  Chat Now &rarr;
+                </span>
+              </a>
+
               <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
                   <Mail className="w-6 h-6" />
@@ -66,18 +101,6 @@ export default function ContactSection({ info }: ContactSectionProps) {
                   <p className="text-[11px] font-mono text-slate-400 uppercase">Direct Email</p>
                   <a href={`mailto:${info.email}`} className="text-sm font-bold text-white hover:text-cyan-400">
                     {info.email}
-                  </a>
-                </div>
-              </div>
-
-              <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
-                  <Phone className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="text-[11px] font-mono text-slate-400 uppercase">Phone & WhatsApp</p>
-                  <a href={`tel:${info.phone}`} className="text-sm font-bold text-white hover:text-cyan-400">
-                    {info.phone}
                   </a>
                 </div>
               </div>

@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         port: '8000',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'myportofolio-backend.onrender.com',
+        pathname: '/**',
+      },
     ],
   },
 };
