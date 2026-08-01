@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ExternalLink, Sparkles, X } from 'lucide-react';
 import { Project } from '@/types/portfolio';
@@ -14,6 +14,17 @@ interface ProjectsSectionProps {
 export default function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [activeFilter, setActiveFilter] = useState<string>('ALL');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  // Close modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedProject(null);
+    };
+    if (selectedProject) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProject]);
 
   const filters = [
     { id: 'ALL', name: 'All Projects' },
@@ -222,90 +233,119 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
 
       {/* Modal Popup */}
       {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-slate-900 border border-cyan-500/30 rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => setSelectedProject(null)}
-              className="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white z-10"
-            >
-              <X className="w-5 h-5" />
-            </button>
+        <div
+          onClick={() => setSelectedProject(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative bg-slate-900 border border-cyan-500/40 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden my-auto border-t-2 border-t-cyan-400/80"
+          >
+            {/* Sticky Header Bar with Always-Visible Close Button */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md sticky top-0 z-30 flex-shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="text-xs font-mono text-cyan-300 font-semibold uppercase tracking-wider">
+                  Project Spec & Details
+                </span>
+              </div>
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-300 hover:text-white hover:bg-rose-600 hover:border-rose-500 transition-all flex items-center gap-1.5 text-xs font-semibold shadow-md active:scale-95"
+                aria-label="Close modal"
+              >
+                <span>Close</span>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
 
-            {/* Modal Image Header (if uploaded) */}
-            {selectedProject.image && (
-              <div className="relative w-full h-64 sm:h-80 rounded-xl bg-slate-950 overflow-hidden border border-slate-800 flex items-center justify-center p-3">
-                {/* Ambient Blurred Background Layer */}
-                <Image
-                  src={getMediaUrl(selectedProject.image)}
-                  alt=""
-                  fill
-                  unoptimized
-                  aria-hidden="true"
-                  className="object-cover blur-2xl opacity-40 scale-125 select-none pointer-events-none"
-                />
-
-                {/* Foreground Full Uncropped Image */}
-                <div className="relative w-full h-full flex items-center justify-center z-10">
+            {/* Scrollable Content Body */}
+            <div className="p-6 sm:p-8 space-y-6 overflow-y-auto flex-grow">
+              {/* Modal Image Header (if uploaded) */}
+              {selectedProject.image && (
+                <div className="relative w-full h-60 sm:h-72 rounded-2xl bg-slate-950 overflow-hidden border border-slate-800/90 flex items-center justify-center p-3">
+                  {/* Ambient Blurred Background Layer */}
                   <Image
                     src={getMediaUrl(selectedProject.image)}
-                    alt={selectedProject.title}
+                    alt=""
                     fill
                     unoptimized
-                    className="object-contain object-center drop-shadow-2xl rounded-lg"
+                    aria-hidden="true"
+                    className="object-cover blur-2xl opacity-40 scale-125 select-none pointer-events-none"
                   />
+
+                  {/* Foreground Full Uncropped Image */}
+                  <div className="relative w-full h-full flex items-center justify-center z-10">
+                    <Image
+                      src={getMediaUrl(selectedProject.image)}
+                      alt={selectedProject.title}
+                      fill
+                      unoptimized
+                      className="object-contain object-center drop-shadow-2xl rounded-xl"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <span className="text-xs font-mono text-cyan-400 font-semibold uppercase tracking-wider">
+                  {selectedProject.subtitle || 'Project Overview'}
+                </span>
+                <h3 className="text-2xl font-extrabold text-white mt-1">{selectedProject.title}</h3>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-mono text-slate-400 uppercase mb-2">PROJECT OVERVIEW</h4>
+                <p className="text-sm text-slate-300 leading-relaxed">{selectedProject.description}</p>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-mono text-slate-400 uppercase mb-2">COMPLETE TECH STACK</h4>
+                <div className="flex flex-wrap gap-2">
+                  {(selectedProject.tech_list || selectedProject.tech_stack.split(',')).map((tech, i) => (
+                    <span
+                      key={i}
+                      className="text-xs font-mono font-semibold text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-lg"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
               </div>
-            )}
 
-            <div>
-              <span className="text-xs font-mono text-cyan-400 font-semibold uppercase tracking-wider">
-                {selectedProject.subtitle || 'Project Specification'}
-              </span>
-              <h3 className="text-2xl font-extrabold text-white mt-1">{selectedProject.title}</h3>
-            </div>
+              <div className="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="px-4 py-2 rounded-xl font-medium text-xs text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 transition-all"
+                >
+                  Close Window
+                </button>
 
-            <div>
-              <h4 className="text-xs font-mono text-slate-400 uppercase mb-2">PROJECT OVERVIEW</h4>
-              <p className="text-sm text-slate-300 leading-relaxed">{selectedProject.description}</p>
-            </div>
-
-            <div>
-              <h4 className="text-xs font-mono text-slate-400 uppercase mb-2">COMPLETE TECH STACK</h4>
-              <div className="flex flex-wrap gap-2">
-                {(selectedProject.tech_list || selectedProject.tech_stack.split(',')).map((tech, i) => (
-                  <span
-                    key={i}
-                    className="text-xs font-mono font-semibold text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-lg"
-                  >
-                    {tech}
-                  </span>
-                ))}
+                <div className="flex items-center gap-3">
+                  {selectedProject.github_url && (
+                    <a
+                      href={selectedProject.github_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-xs text-white bg-slate-800 hover:bg-slate-700 transition-all"
+                    >
+                      <GithubIcon className="w-4 h-4" />
+                      <span>GitHub Repository</span>
+                    </a>
+                  )}
+                  {selectedProject.live_url && (
+                    <a
+                      href={selectedProject.live_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-cyan-500 to-indigo-600 shadow-md hover:scale-105 transition-all"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <span>Visit Live Demo</span>
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
-
-            <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
-              {selectedProject.github_url && (
-                <a
-                  href={selectedProject.github_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-xs text-white bg-slate-800 hover:bg-slate-700 transition-all"
-                >
-                  <GithubIcon className="w-4 h-4" />
-                  <span>GitHub Repository</span>
-                </a>
-              )}
-              {selectedProject.live_url && (
-                <a
-                  href={selectedProject.live_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-cyan-500 to-indigo-600 shadow-md hover:scale-105 transition-all"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>Visit Live Demo</span>
-                </a>
-              )}
             </div>
           </div>
         </div>
